@@ -2,24 +2,20 @@ package com.task.network;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.Context;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.task.callbacks.MessageCallback;
-import com.task.err.ErrorLogger;
+import com.task.err.Logger;
 import com.task.models.MessageList;
 
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Dispatcher;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,7 +98,7 @@ public class ApiService extends IntentService {
             }
             catch (Exception e)
             {
-                ErrorLogger.add(ErrorLogger.SEVERE,"get_messages",e);
+                Logger.add(Logger.SEVERE,"get_messages",e);
             }
         }
     }

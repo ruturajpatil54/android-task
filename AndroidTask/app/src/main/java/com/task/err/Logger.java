@@ -3,7 +3,7 @@ package com.task.err;
 import android.util.Log;
 
 
-public class ErrorLogger  {
+public class Logger {
     // Error Level
     public static final int SEVERE = 0;
     public static final int DEBUG = 1;
