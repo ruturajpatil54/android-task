@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.task.R;
+import com.task.adapters.TabsAdapter;
 import com.task.callbacks.MessageCallback;
 import com.task.err.Logger;
 import com.task.models.MessageList;
@@ -20,6 +23,9 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
 
     private static ProgressDialog progressDialog;
     private static ApiService.ApiServiceBinder apiServiceBinder;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private MessageList messageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +33,7 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        showMessage(getString(R.string.getting_messages),false);
+        showAlert(getString(R.string.getting_messages),false);
 
 
         // connect to API service
@@ -48,11 +54,14 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
             }
         }, Context.BIND_AUTO_CREATE);
 
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+
     }
 
 
 
-    public synchronized void showMessage(String dialogMessage,boolean allowCancel)
+    public synchronized void showAlert(String dialogMessage, boolean allowCancel)
     {
         try{
             if(progressDialog==null)
@@ -71,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
         }
 
     }
-    public void closeDialog()
+    public void hideAlert()
     {
         if(progressDialog!=null)
             progressDialog.dismiss();
@@ -79,13 +88,45 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
 
     @Override
     public void onMessagesRetreived(MessageList messageList) {
-        closeDialog();
+        hideAlert();
+        this.messageList = messageList;
         Logger.add(Logger.DEBUG,"get_messages",messageList.toString());
+        setupTabs();
     }
+
+    private void setupTabs() {
+
+        tabLayout.addTab(tabLayout.newTab().setText("Conversations"));
+        tabLayout.addTab(tabLayout.newTab().setText("Favorites"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
+        tabsAdapter.setMessageList(messageList);
+        tabsAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(tabsAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+        });
+    }
+
     @Override
     public void onGetMessageFailure(String status)
     {
-        closeDialog();
+        hideAlert();
         Logger.add(Logger.SEVERE,"get_messages",status);
     }
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:weightSum="11"
+    android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_weight="7.78"
+        android:layout_height="0dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/title"
+            android:padding="2dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text="User"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            />
+        <ImageView
+            android:layout_width="35dp"
+            android:id="@+id/favoriteButton"
+            android:layout_gravity="right"
+            android:src="@drawable/star_empty"
+            android:layout_height="35dp" />
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="9"
+        android:gravity="center"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:id="@+id/contentMsg"
+            android:text="Message"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/black"
+            android:background="@android:color/white"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:id="@+id/contentImg"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+</LinearLayout>
