@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/lightGray"
+    android:elevation="1dp"
     android:layout_height="match_parent"
     >
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,18 +18,17 @@
         android:layout_marginRight="16dp"
         android:layout_above="@+id/refreshButton"
         app:layoutManager="LinearLayoutManager"
-        tools:context="com.task.fragments.ConversationsFragment"
-        tools:listitem="@layout/fragment_messageview" />
+        tools:context="com.task.fragments.ConversationsFragment" />
     <Button
         android:layout_width="wrap_content"
         android:layout_gravity="bottom"
         android:gravity="center"
         android:id="@+id/refreshButton"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/background_rounded_blue"
         android:layout_margin="5dp"
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:text="REFRESH"/>
 </RelativeLayout>

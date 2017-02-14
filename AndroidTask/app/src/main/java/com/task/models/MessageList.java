@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by ruturaj on 13/2/17.
@@ -16,6 +17,8 @@ public class MessageList {
     @SerializedName("messages")
     @Expose
     private ArrayList<Message> messages;
+
+    transient public HashMap<String,Message> messageMap = new HashMap<>(); // needed to fetch name,userName,image-url for given userName
 
     public Integer getCount() {
         return count;

@@ -3,17 +3,26 @@ package com.task.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.task.R;
+import com.task.activities.HomeActivity;
 import com.task.adapters.ConversationViewAdapter;
+import com.task.models.Message;
 import com.task.models.MessageList;
+import com.task.utils.MessageLink;
+import com.task.utils.TimeUtils;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import static com.task.activities.HomeActivity.messageList;
 
 public class ConversationsFragment extends Fragment {
 
@@ -21,15 +30,12 @@ public class ConversationsFragment extends Fragment {
     private int mColumnCount = 1;
 
     private OnListFragmentInteractionListener mListener;
-    private MessageList messageList;
+    private ConversationViewAdapter conversationViewAdapter;
 
     public ConversationsFragment() {
         super();
     }
-    public void setMessageList(MessageList messageList)
-    {
-        this.messageList = messageList;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,15 @@ public class ConversationsFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            recyclerView.setAdapter(new ConversationViewAdapter(messageList, mListener));
+            Button refreshButton = (Button) root.findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.fetchAllMessages();
+            }
+        });
+            conversationViewAdapter = new ConversationViewAdapter(mListener);
+            recyclerView.setAdapter(conversationViewAdapter);
         return root;
     }
 
@@ -66,7 +80,13 @@ public class ConversationsFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnListFragmentInteractionListener {
+    public void notifyDataChanged() {
+        conversationViewAdapter.notifyDataSetChanged();
+    }
 
+    public interface OnListFragmentInteractionListener {
+        public void fetchAllMessages();
+
+        void notifyDataChanged();
     }
 }

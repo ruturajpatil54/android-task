@@ -25,6 +25,16 @@ public class Message
     @Expose
     private String messageTime;
 
+    transient String messageLinked; // indicates if message is part of consecutive messages by same user. Values indicated by Enum
+
+    public String getMessageLinked() {
+        return messageLinked;
+    }
+
+    public void setMessageLinked(String messageLinked) {
+        this.messageLinked = messageLinked;
+    }
+
     public String getBody() {
         return body;
     }

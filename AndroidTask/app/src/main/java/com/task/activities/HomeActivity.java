@@ -16,16 +16,31 @@ import com.task.R;
 import com.task.adapters.TabsAdapter;
 import com.task.callbacks.MessageCallback;
 import com.task.err.Logger;
+import com.task.fragments.ConversationsFragment;
+import com.task.models.FavoriteMessageList;
+import com.task.models.Message;
 import com.task.models.MessageList;
 import com.task.network.ApiService;
+import com.task.utils.MessageLink;
+import com.task.utils.TimeUtils;
 
-public class HomeActivity extends AppCompatActivity implements MessageCallback {
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import static com.task.activities.HomeActivity.messageList;
+
+public class HomeActivity extends AppCompatActivity implements MessageCallback,
+        ConversationsFragment.OnListFragmentInteractionListener
+{
 
     private static ProgressDialog progressDialog;
     private static ApiService.ApiServiceBinder apiServiceBinder;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private MessageList messageList;
+
+    public static MessageList messageList;
+    public static FavoriteMessageList favoriteMessageList;
+    private TabsAdapter tabsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
                 apiServiceBinder = (ApiService.ApiServiceBinder)iBinder;
 
                 // Fetch all messages
-                apiServiceBinder.getMessages(HomeActivity.this);
+                fetchAllMessages();
             }
 
             @Override
@@ -59,6 +74,9 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
 
     }
 
+    public void fetchAllMessages() {
+        apiServiceBinder.getMessages(HomeActivity.this);
+    }
 
 
     public synchronized void showAlert(String dialogMessage, boolean allowCancel)
@@ -87,22 +105,77 @@ public class HomeActivity extends AppCompatActivity implements MessageCallback {
     }
 
     @Override
-    public void onMessagesRetreived(MessageList messageList) {
+    public void onMessagesRetreived(MessageList retreivedMessageList) {
         hideAlert();
-        this.messageList = messageList;
+        messageList = retreivedMessageList;
+        favoriteMessageList = new FavoriteMessageList();
         Logger.add(Logger.DEBUG,"get_messages",messageList.toString());
+        // @Todo sort list based on time stamp
+        // check for consecutive messages by same user within delay of 100 seconds
+        try {
+            int messageCount = messageList.getCount();
+            for (int i = 0; i < messageCount; i++) {
+                Message currentMessage = messageList.getMessages().get(i), nextMessage = null, prevMessage = null;
+                if(!messageList.messageMap.containsKey(currentMessage.getUsername()))
+                    messageList.messageMap.put(currentMessage.getUsername(),currentMessage);
+                Date currentMsgTime = TimeUtils.parseDate(currentMessage.getMessageTime());
+                if (i + 1 < messageCount) {
+                    nextMessage = messageList.getMessages().get(i + 1);
+                    if (!nextMessage.getUsername().equals(currentMessage.getUsername()))
+                        nextMessage = null;
+                    if (nextMessage != null) {
+                        Date nextMsgTime = TimeUtils.parseDate(nextMessage.getMessageTime());
+
+                        long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(nextMsgTime.getTime() - currentMsgTime.getTime());
+                        if (diffInSeconds > 100)
+                            nextMessage = null;
+                    }
+
+                }
+                if (i - 1 >= 0) {
+                    prevMessage = messageList.getMessages().get(i - 1);
+                    if (!prevMessage.getUsername().equals(currentMessage.getUsername()))
+                        prevMessage = null;
+
+                    if(prevMessage!=null)
+                    {
+                        Date prevMsgTime = TimeUtils.parseDate(prevMessage.getMessageTime());
+
+                        long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(currentMsgTime.getTime() - prevMsgTime.getTime());
+                        if (diffInSeconds > 100)
+                            prevMessage = null;
+                    }
+                }
+                if (prevMessage != null && nextMessage != null)
+                    currentMessage.setMessageLinked(MessageLink.INTERMMEDIATE.value());
+                else if (prevMessage == null && nextMessage != null)
+                    currentMessage.setMessageLinked(MessageLink.FIRST.value());
+                else if (prevMessage != null && nextMessage == null)
+                    currentMessage.setMessageLinked(MessageLink.LAST.value());
+                else
+                    currentMessage.setMessageLinked(MessageLink.NONE.value());
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         setupTabs();
     }
-
+    @Override
+    public void notifyDataChanged()
+    {
+        tabsAdapter.notifyDataSetChanged();
+    }
     private void setupTabs() {
-
-        tabLayout.addTab(tabLayout.newTab().setText("Conversations"));
-        tabLayout.addTab(tabLayout.newTab().setText("Favorites"));
+        if(tabLayout.getTabCount()==0)
+        {
+            tabLayout.addTab(tabLayout.newTab().setText("Conversations"));
+            tabLayout.addTab(tabLayout.newTab().setText("Favorites"));
+        }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
-        tabsAdapter.setMessageList(messageList);
-        tabsAdapter.notifyDataSetChanged();
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager());
         viewPager.setAdapter(tabsAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

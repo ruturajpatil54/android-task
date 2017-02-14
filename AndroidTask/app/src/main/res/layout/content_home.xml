@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.task.activities.HomeActivity"
     tools:showIn="@layout/activity_home">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
             android:id="@+id/tabs"
@@ -19,8 +21,7 @@
         <android.support.v4.view.ViewPager
             android:layout_width="match_parent"
             android:id="@+id/viewPager"
-            android:background="@color/colorAccent"
-            android:layout_height="100dp">
+            android:layout_height="wrap_content">
 
         </android.support.v4.view.ViewPager>
     </LinearLayout>

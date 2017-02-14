@@ -5,4 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="haptikChat">Haptik Chat</string>
     <string name="getting_messages">Syncing conversations, please wait...</string>
+    <string name="img_load_failed">Failed to load image:</string>
 </resources>

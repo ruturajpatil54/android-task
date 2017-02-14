@@ -1,62 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:weightSum="11"
+    android:weightSum="12"
+    android:layout_margin="3dp"
+    android:id="@+id/root"
+    android:background="@drawable/background_rounded"
+    android:elevation="10dp"
     android:layout_height="wrap_content">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_weight="7.78"
-        android:layout_height="0dp">
+        android:layout_weight="2"
+        android:padding="2dp"
+        android:id="@+id/header"
+        android:background="@drawable/background_rounded_top"
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/title"
-            android:padding="2dp"
             android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:gravity="start"
+            android:textStyle="italic"
+            android:textSize="14dp"
+            android:padding="3dp"
             android:text="User"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/black"
+
             />
         <ImageView
-            android:layout_width="35dp"
+            android:layout_width="30dp"
             android:id="@+id/favoriteButton"
             android:layout_gravity="right"
-            android:src="@drawable/star_empty"
-            android:layout_height="35dp" />
+            android:src="@mipmap/ic_star_0"
+            android:layout_height="30dp" />
     </FrameLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
         android:layout_gravity="center"
+        android:id="@+id/body"
+        android:padding="3dp"
         android:layout_weight="9"
-        android:gravity="center"
+        android:weightSum="12"
         android:background="@android:color/white"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="11"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:padding="3dp"
             android:id="@+id/contentMsg"
+            android:textSize="14dp"
             android:text="Message"
-            android:textStyle="bold"
-            android:gravity="center"
+            android:autoLink="all"
+            android:gravity="start"
             android:visibility="visible"
-            android:textAlignment="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:background="@android:color/white"
             />
         <ImageView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:visibility="gone"
-            android:id="@+id/contentImg"
-            android:layout_height="wrap_content" />
+            android:id="@+id/favoriteButton2"
+            android:layout_gravity="right"
+            android:src="@mipmap/ic_star_0"
+            android:layout_height="30dp" />
     </LinearLayout>
+<TextView
+    android:layout_width="match_parent"
+    android:text="Feb 14 9:58 AM"
+    android:id="@+id/msgTime"
+    android:layout_below="@+id/body"
+    android:textSize="12dp"
+    android:textAlignment="textEnd"
+    android:gravity="end"
+    android:paddingRight="10dp"
+    android:paddingTop="2dp"
+    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+    android:textColor="@android:color/darker_gray"
+    android:layout_height="wrap_content" />
 
 
-
-</LinearLayout>
+</RelativeLayout>

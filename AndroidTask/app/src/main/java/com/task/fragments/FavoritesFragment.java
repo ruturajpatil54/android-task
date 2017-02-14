@@ -14,12 +14,14 @@ import com.task.R;
 import com.task.models.FavoriteMessageList;
 import com.task.models.MessageList;
 
+import static com.task.activities.HomeActivity.messageList;
+
 public class FavoritesFragment extends Fragment {
 
     private int mColumnCount = 1;
 
     private OnListFragmentInteractionListener mListener;
-    private FavoriteMessageList messageList;
+    private FavoriteMessageViewAdapter favoriteMessageViewAdapter;
 
     public FavoritesFragment() {
     }
@@ -29,10 +31,7 @@ public class FavoritesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-    public void setMessageList(FavoriteMessageList messageList)
-    {
-        this.messageList = messageList;
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +47,8 @@ public class FavoritesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new FavoriteMessageViewAdapter(messageList, mListener));
+            favoriteMessageViewAdapter = new FavoriteMessageViewAdapter(mListener);
+            recyclerView.setAdapter(favoriteMessageViewAdapter);
         }
         return view;
     }
@@ -67,6 +67,10 @@ public class FavoritesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void notifyDataChanged() {
+        favoriteMessageViewAdapter.notifyDataSetChanged();
     }
 
     public interface OnListFragmentInteractionListener {

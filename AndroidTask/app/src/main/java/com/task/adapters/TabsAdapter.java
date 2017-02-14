@@ -9,18 +9,18 @@ import com.task.fragments.FavoritesFragment;
 import com.task.models.FavoriteMessageList;
 import com.task.models.MessageList;
 
+import static com.task.activities.HomeActivity.messageList;
+
 
 public class TabsAdapter extends FragmentPagerAdapter
 {
 
-    private MessageList messageList;
+
+    private ConversationsFragment conversationsFragment;
+    private FavoritesFragment favoritesFragment;
 
     public TabsAdapter(FragmentManager fm) {
         super(fm);
-    }
-    public void setMessageList(MessageList messageList)
-    {
-        this.messageList = messageList;
     }
     @Override
     public Fragment getItem(int position) {
@@ -28,20 +28,21 @@ public class TabsAdapter extends FragmentPagerAdapter
         switch (position)
         {
             case 0 :
-                ConversationsFragment conversationsFragment = new ConversationsFragment();
-                conversationsFragment.setMessageList(messageList);
+                conversationsFragment = new ConversationsFragment();
                 fragment = conversationsFragment;
                 break;
             case 1 :
-                FavoritesFragment favoritesFragment = new FavoritesFragment();
-                FavoriteMessageList favoriteMessageList = new FavoriteMessageList();
-                favoriteMessageList.setMessages(messageList.getMessages());
-                favoriteMessageList.setCount(messageList.getCount());
-                favoritesFragment.setMessageList(favoriteMessageList);
+                favoritesFragment = new FavoritesFragment();
                 fragment = favoritesFragment;
                 break;
         }
         return fragment;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        favoritesFragment.notifyDataChanged();
     }
 
     @Override
