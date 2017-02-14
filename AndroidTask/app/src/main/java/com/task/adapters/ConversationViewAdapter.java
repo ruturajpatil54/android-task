@@ -1,8 +1,6 @@
 package com.task.adapters;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import com.task.R;
 import com.task.fragments.ConversationsFragment;
-import com.task.models.FavoriteMessageList;
 import com.task.models.Message;
 import com.task.utils.MessageLink;
 import com.task.utils.TimeUtils;

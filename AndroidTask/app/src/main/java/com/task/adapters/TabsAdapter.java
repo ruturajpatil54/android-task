@@ -6,10 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.task.fragments.ConversationsFragment;
 import com.task.fragments.FavoritesFragment;
-import com.task.models.FavoriteMessageList;
-import com.task.models.MessageList;
-
-import static com.task.activities.HomeActivity.messageList;
 
 
 public class TabsAdapter extends FragmentPagerAdapter
