@@ -12,17 +12,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.task.R;
-import com.task.activities.HomeActivity;
 import com.task.adapters.ConversationViewAdapter;
-import com.task.models.Message;
-import com.task.models.MessageList;
-import com.task.utils.MessageLink;
-import com.task.utils.TimeUtils;
-
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import static com.task.activities.HomeActivity.messageList;
 
 public class ConversationsFragment extends Fragment {
 

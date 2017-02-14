@@ -10,12 +10,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.task.R;
-import com.task.models.FavoriteMessageList;
 import com.task.models.Message;
 import com.task.utils.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.task.activities.HomeActivity.favoriteMessageList;
 import static com.task.activities.HomeActivity.messageList;

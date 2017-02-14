@@ -11,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.task.R;
-import com.task.models.FavoriteMessageList;
-import com.task.models.MessageList;
-
-import static com.task.activities.HomeActivity.messageList;
 
 public class FavoritesFragment extends Fragment {
 

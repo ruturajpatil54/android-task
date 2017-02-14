@@ -27,8 +27,6 @@ import com.task.utils.TimeUtils;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static com.task.activities.HomeActivity.messageList;
-
 public class HomeActivity extends AppCompatActivity implements MessageCallback,
         ConversationsFragment.OnListFragmentInteractionListener
 {
